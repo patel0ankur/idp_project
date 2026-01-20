@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: idp_project
+  annotations:
+    github.com/project-slug: patel0ankur/idp_project
+spec:
+  type: other
+  lifecycle: unknown
+  owner: guests
