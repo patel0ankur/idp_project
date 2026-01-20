@@ -1,0 +1,161 @@
+---
+# Sample catalog-info.yaml for Backstage
+# Place this file in the root of your GitHub repository
+
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sample-microservice
+  description: A sample microservice demonstrating Backstage catalog integration
+  annotations:
+    # GitHub integration - links this component to your GitHub repository
+    github.com/project-slug: your-org/your-repo
+    
+    # TechDocs integration - generates documentation from markdown files
+    backstage.io/techdocs-ref: dir:.
+    
+    # Link to CI/CD pipeline (optional)
+    # jenkins.io/job-full-name: folder-name/job-name
+    # circleci.com/project-slug: github/your-org/your-repo
+    
+    # Link to monitoring dashboards (optional)
+    # grafana/dashboard-selector: '(tags @> 'my-service')'
+    # grafana/alert-label-selector: 'service=my-service'
+    
+    # AWS resources (optional)
+    # aws.amazon.com/lambda-function-name: my-function
+    # aws.amazon.com/lambda-region: us-east-1
+    
+    # Kubernetes resources (optional)
+    # backstage.io/kubernetes-id: sample-microservice
+    # backstage.io/kubernetes-namespace: production
+  
+  tags:
+    - nodejs
+    - microservice
+    - api
+    - rest
+    - typescript
+  
+  links:
+    - url: https://your-service.example.com
+      title: Production URL
+      icon: web
+    - url: https://your-service-staging.example.com
+      title: Staging URL
+      icon: dashboard
+    - url: https://wiki.example.com/sample-microservice
+      title: Documentation
+      icon: docs
+    - url: https://github.com/your-org/your-repo/issues
+      title: GitHub Issues
+      icon: github
+
+spec:
+  type: service
+  lifecycle: production  # or: experimental, production, deprecated
+  owner: team-backend
+  system: platform
+  
+  # Dependencies on other components (optional)
+  dependsOn:
+    - component:default/postgres-database
+    - component:default/redis-cache
+  
+  # APIs provided by this component (optional)
+  providesApis:
+    - sample-api
+  
+  # APIs consumed by this component (optional)
+  consumesApis:
+    - auth-api
+    - payment-api
+
+---
+# Optional: Define the API that this service provides
+
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: sample-api
+  description: RESTful API for sample microservice
+  annotations:
+    github.com/project-slug: your-org/your-repo
+  tags:
+    - rest
+    - openapi
+  links:
+    - url: https://your-service.example.com/api/docs
+      title: API Documentation
+      icon: docs
+
+spec:
+  type: openapi
+  lifecycle: production
+  owner: team-backend
+  system: platform
+  
+  # Link to OpenAPI/Swagger specification
+  definition: |
+    openapi: 3.0.0
+    info:
+      title: Sample API
+      version: 1.0.0
+      description: API for sample microservice
+    paths:
+      /health:
+        get:
+          summary: Health check endpoint
+          responses:
+            '200':
+              description: Service is healthy
+      /api/v1/resources:
+        get:
+          summary: Get all resources
+          responses:
+            '200':
+              description: List of resources
+
+---
+# Optional: Define a Resource (database, storage, etc.)
+
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: sample-postgres-database
+  description: PostgreSQL database for sample microservice
+  annotations:
+    github.com/project-slug: your-org/your-repo
+  tags:
+    - database
+    - postgresql
+  links:
+    - url: https://aws.amazon.com/rds/
+      title: AWS RDS Console
+      icon: dashboard
+
+spec:
+  type: database
+  owner: team-backend
+  system: platform
+  lifecycle: production
+  
+  # Connection details (use environment variables in production)
+  dependencyOf:
+    - component:default/sample-microservice
+
+---
+# Optional: Define a System (group of related components)
+
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: platform
+  description: Core platform services
+  tags:
+    - platform
+    - infrastructure
+
+spec:
+  owner: team-platform
+  domain: backend
