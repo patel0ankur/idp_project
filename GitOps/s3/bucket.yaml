@@ -3,5 +3,5 @@ kind: XObjectStorage
 metadata:
   name: my-test-bucket
 spec:
-  bucketName: test-bucket-590443650088
+  bucketName: idp_bucket_590443650088
   region: us-east-1
